@@ -35,19 +35,27 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	unsigned int bufferId;
-	glGenBuffers(1, &bufferId);
-	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-
 	float vertices[] = {
-			0.2f,
-			0.8f,
-			0.4f,
+			-1.0f,
+			-1.0f,
+			0.0f,
 			1.0f,
+			0.0f,
+			1.0f,
+			1.0f,
+			-1.0f,
 	};
 
-	glBufferData(GL_ARRAY_BUFFER, 2, vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	unsigned int vbo, vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
 
 	std::vector<shader::shader> shaders{
@@ -66,12 +74,12 @@ int main(int argc, char *argv[])
 
 	while (!glfwWindowShouldClose(window))
 	{
-		glfwPollEvents();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-		glDrawArrays(GL_LINES, 0, 2);
+		glBindVertexArray(vao);
+		glDrawArrays(GL_LINES, 0, 8);
 		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
 	glfwTerminate();
