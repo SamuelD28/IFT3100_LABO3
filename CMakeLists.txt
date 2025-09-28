@@ -14,6 +14,8 @@ target_link_libraries(app glad)
 find_package(glfw3 REQUIRED CONFIG)
 target_link_libraries(app glfw)
 
+file(COPY ${CMAKE_SOURCE_DIR}/bin DESTINATION ${CMAKE_BINARY_DIR})
+
 target_sources(app PRIVATE 
 	${CMAKE_SOURCE_DIR}/src/main.cpp 
 )
