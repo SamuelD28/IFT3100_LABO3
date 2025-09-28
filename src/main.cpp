@@ -40,19 +40,21 @@ int main(int argc, char *argv[])
 	glGenBuffers(1, &bufferId);
 	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
 
-	auto vertices = new float[]{
+	float vertices[] = {
 			0.5f,
 			1.0f,
 	};
 
+	glBufferData(GL_ARRAY_BUFFER, 2, vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	glEnableVertexAttribArray(0);
+
 	while (!glfwWindowShouldClose(window))
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glDrawArrays(GL_LINE, 1)
-
-				glfwSwapBuffers(window);
 		glfwPollEvents();
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDrawArrays(GL_LINE, 0, 2);
+		glfwSwapBuffers(window);
 	}
 
 	glfwTerminate();
