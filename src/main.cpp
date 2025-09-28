@@ -1,6 +1,7 @@
 #include <iostream>
 #include <glad.h>
 #include <GLFW/glfw3.h>
+#include <shader.hpp>
 
 void glfwErrorCallback(int errorCode, const char *description)
 {
@@ -34,14 +35,14 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
 	unsigned int bufferId;
 	glGenBuffers(1, &bufferId);
 	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
 
 	float vertices[] = {
-			0.5f,
+			0.2f,
+			0.8f,
+			0.4f,
 			1.0f,
 	};
 
@@ -49,15 +50,29 @@ int main(int argc, char *argv[])
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(0);
 
+	std::vector<shader::shader> shaders{
+			shader::shader{0, 0, "bin/shaders/line.vert", "", GL_VERTEX_SHADER},
+			shader::shader{0, 0, "bin/shaders/line.frag", "", GL_FRAGMENT_SHADER},
+	};
+
+	auto programId = shader::buildProgram(shaders);
+
+	for (auto &shader : shaders)
+	{
+		std::cout << "(COMPILED SHADER) id:" << shader.id << " - path:" << shader.path << " - program id:" << shader.programId << std::endl;
+	}
+
+	glUseProgram(programId);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawArrays(GL_LINE, 0, 2);
+		glDrawArrays(GL_LINE, 0, 4);
 		glfwSwapBuffers(window);
 	}
 
 	glfwTerminate();
-	std::cout << "Ran without issues" << std::endl;
 	return 0;
 }

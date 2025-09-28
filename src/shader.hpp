@@ -27,5 +27,4 @@ namespace shader
 	unsigned int initProgram();
 	bool attachProgram(unsigned int programId, unsigned int shaderId);
 	unsigned int buildProgram(std::vector<shader> &shaders);
-	unsigned int createTexture(std::vector<std::string> imagesPath);
 }

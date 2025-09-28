@@ -6,7 +6,6 @@
 #include <vector>
 #include <array>
 #include <cmath>
-#include <FreeImage.h>
 
 namespace shader
 {
@@ -91,7 +90,7 @@ namespace shader
 		return glCreateProgram();
 	}
 
-	bool attachProgram(unsigned int programId, unsigned int shaderId)
+	void attachProgram(unsigned int programId, unsigned int shaderId)
 	{
 		glAttachShader(programId, shaderId);
 	}
@@ -100,7 +99,7 @@ namespace shader
 	{
 		unsigned int programId = initProgram();
 
-		for (auto shader : shaders)
+		for (auto &shader : shaders)
 		{
 			shader.source = load(shader.path);
 			shader.id = compile(shader.source, shader.type);
@@ -120,58 +119,5 @@ namespace shader
 		}
 
 		return programId;
-	}
-
-	// Texture stuff
-	unsigned int createTexture(std::vector<std::string> imagesPath)
-	{
-		const unsigned int width = 512;
-		const unsigned int height = 512;
-		unsigned int textureId;
-		glGenTextures(1, &textureId);
-		glBindTexture(GL_TEXTURE_2D_ARRAY, textureId);
-
-		// Create a storage for the 3d texture
-		glTexImage3D(GL_TEXTURE_2D_ARRAY,
-								 0,																 // level
-								 GL_RGB,													 // Internal format
-								 width, height, imagesPath.size(), // width,height,depth
-								 0,
-								 GL_BGR,					 // format
-								 GL_UNSIGNED_BYTE, // type
-								 0								 // pointer to data
-		);
-
-		for (unsigned int i = 0; i < imagesPath.size(); i++)
-		{
-			auto imagePath = imagesPath[i];
-			auto imagePointer = imagePath.c_str();
-			auto type = FreeImage_GetFileType(imagePointer, 0);
-			auto image = FreeImage_Load(type, imagePointer, 0);
-
-			if (image == NULL)
-			{
-				throw shader_error("iamge could not be loaded");
-			}
-
-			auto rescaledImage = FreeImage_Rescale(image, width, height);
-			auto bytes = FreeImage_GetBits(rescaledImage);
-
-			// Assign a texture to depth 1
-			glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, width, height, 1, GL_BGR, GL_UNSIGNED_BYTE, bytes);
-
-			FreeImage_Unload(image);
-		}
-
-		// Really fucken necessary even if you dont use mipmap levels in texture3d
-		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
-
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		return textureId;
 	}
 }
