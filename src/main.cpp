@@ -69,7 +69,8 @@ int main(int argc, char *argv[])
 		glfwPollEvents();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawArrays(GL_LINE, 0, 4);
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId);
+		glDrawArrays(GL_LINES, 0, 2);
 		glfwSwapBuffers(window);
 	}
 

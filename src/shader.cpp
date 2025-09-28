@@ -118,6 +118,11 @@ namespace shader
 			throw new shader_error(infoLog);
 		}
 
+		for (auto &shader : shaders)
+		{
+			glDeleteShader(shader.id);
+		}
+
 		return programId;
 	}
 }
