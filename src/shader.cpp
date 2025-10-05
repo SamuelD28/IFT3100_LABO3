@@ -31,6 +31,12 @@ namespace shader
 		unsigned int type = -1;
 	};
 
+	std::ostream &operator<<(std::ostream &os, const shader &shader)
+	{
+		os << "(COMPILED SHADER) id:" << shader.id << " - path:" << shader.path << " - program id:" << shader.programId;
+		return os;
+	}
+
 	// Does the file gets freed if an error occurs?
 	std::string load(std::string location)
 	{

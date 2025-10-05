@@ -64,12 +64,6 @@ int main(int argc, char *argv[])
 	};
 
 	auto programId = shader::buildProgram(shaders);
-
-	for (auto &shader : shaders)
-	{
-		std::cout << "(COMPILED SHADER) id:" << shader.id << " - path:" << shader.path << " - program id:" << shader.programId << std::endl;
-	}
-
 	glUseProgram(programId);
 
 	while (!glfwWindowShouldClose(window))

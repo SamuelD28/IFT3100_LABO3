@@ -22,6 +22,7 @@ namespace shader
 		unsigned int type;
 	};
 
+	std::ostream &operator<<(std::ostream &os, const shader &shader);
 	std::string load(std::string location);
 	unsigned int compile(std::string source, unsigned int type);
 	unsigned int initProgram();
