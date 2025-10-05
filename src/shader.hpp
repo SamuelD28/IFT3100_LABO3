@@ -15,11 +15,11 @@ namespace shader
 	};
 	struct shader
 	{
-		unsigned int programId;
-		unsigned int id;
-		std::string path;
-		std::string source;
-		unsigned int type;
+		unsigned int programId = -1;
+		unsigned int id = -1;
+		std::string path = "";
+		std::string source = "";
+		unsigned int type = -1;
 	};
 
 	std::ostream &operator<<(std::ostream &os, const shader &shader);

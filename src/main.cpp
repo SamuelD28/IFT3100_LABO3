@@ -2,6 +2,7 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
 #include <shader.hpp>
+#include <shape.hpp>
 
 void glfwErrorCallback(int errorCode, const char *description)
 {
@@ -35,16 +36,16 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	float vertices[] = {
-			-1.0f,
-			-1.0f,
-			0.0f,
-			1.0f,
-			0.0f,
-			1.0f,
-			1.0f,
-			-1.0f,
-	};
+	shape::triangle triangle(
+			shape::point(-1.0f, -1.0f),
+			shape::point(0.0f, 1.0f),
+			shape::point(0.0f, 1.0f));
+
+	std::cout << "HERE" << "\n"; 
+	std::cout << triangle.first.x << "\n"; 
+
+	auto triangleVertices = triangle.getVertices();
+	// float triangleVertices[] = {};
 
 	unsigned int vbo, vao;
 	glGenVertexArrays(1, &vao);
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle), triangleVertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
@@ -76,6 +77,7 @@ int main(int argc, char *argv[])
 		glfwPollEvents();
 	}
 
+	// delete trianglerVertices;
 	glfwTerminate();
 	return 0;
 }

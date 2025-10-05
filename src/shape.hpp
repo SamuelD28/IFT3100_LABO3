@@ -3,10 +3,28 @@ namespace shape
 	struct point
 	{
 	public:
-		float x;
+		float x = 0;
 
 	public:
-		float y;
+		float y = 0;
+	};
+
+	struct triangle
+	{
+	public:
+		point first;
+
+	public:
+		point second;
+
+	public:
+		point third;
+
+	public:
+		float *getVertices();
+
+	public:
+		float *getIndices();
 	};
 
 	struct plane
@@ -23,7 +41,10 @@ namespace shape
 	public:
 		point upperRight;
 
+	public:
 		float *getVertices();
+
+	public:
 		float *getIndices();
 	};
 };
