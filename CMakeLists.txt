@@ -16,5 +16,9 @@ target_link_libraries(app glfw)
 
 file(COPY ${CMAKE_SOURCE_DIR}/bin DESTINATION ${CMAKE_BINARY_DIR})
 
-target_sources(app PRIVATE ${CMAKE_SOURCE_DIR}/src/main.cpp ${CMAKE_SOURCE_DIR}/src/shader.cpp)
+target_sources(app PRIVATE 
+	${CMAKE_SOURCE_DIR}/src/main.cpp 
+	${CMAKE_SOURCE_DIR}/src/shader.cpp
+	${CMAKE_SOURCE_DIR}/src/shape.cpp
+)
 target_include_directories(app PRIVATE ${CMAKE_SOURCE_DIR}/src)
