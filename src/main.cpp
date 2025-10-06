@@ -36,13 +36,57 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	std::vector<float> vertices{};
+	std::vector<unsigned int> indices{};
+
 	shape::triangle triangle(
 			0,
+			std::array<float, 4>{1.0f, 0.0f, 0.0f, 0.0f},
 			shape::point(-0.5f, -0.5f),
 			shape::point(0.0f, 0.5f),
 			shape::point(0.5f, -0.5f));
 	auto triangleVertices = triangle.getVertices();
-	auto triangleIndices = triangle.getIndices();
+	auto triangleIndices = triangle.getIndices(0);
+
+	for (auto vertice : triangleVertices)
+	{
+		vertices.insert(vertices.end(), vertice);
+	}
+
+	for (auto indice : triangleIndices)
+	{
+		indices.insert(indices.end(), indice);
+	}
+
+	shape::triangle triangle_two(
+			0,
+			std::array<float, 4>{0.0f, 1.0f, 0.0f, 0.0f},
+			shape::point(-0.75f, -0.75f),
+			shape::point(0.0f, 0.75f),
+			shape::point(0.75f, -0.75f));
+	auto triangleTwoVertices = triangle_two.getVertices();
+	auto triangleTwoIndices = triangle_two.getIndices(3);
+
+	for (auto vertice : triangleTwoVertices)
+	{
+		vertices.insert(vertices.end(), vertice);
+	}
+
+	for (auto indice : triangleTwoIndices)
+	{
+		indices.insert(indices.end(), indice);
+	}
+
+	for (auto indice : indices)
+	{
+		std::cout << indice << "\n";
+	}
+	std::cout << "------\n";
+
+	for (auto vertice : vertices)
+	{
+		std::cout << vertice << "\n";
+	}
 
 	unsigned int vbo, vao, ebo;
 	glGenVertexArrays(1, &vao);
@@ -50,14 +94,14 @@ int main(int argc, char *argv[])
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices) * 6, triangleVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
 
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(triangleIndices) * 3, triangleIndices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
 	std::vector<shader::shader> shaders{
 			shader::shader{0, 0, "bin/shaders/line.vert", "", GL_VERTEX_SHADER},
@@ -73,13 +117,17 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glBindVertexArray(vao);
+
+		triangle_two.draw(programId);
+		glDrawArrays(GL_LINES, 0, vertices.size() / 2);
+		
 		triangle.draw(programId);
+		glDrawArrays(GL_LINES, vertices.size() / 2, vertices.size() / 2);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	delete triangleVertices;
 	glfwTerminate();
 	return 0;
 }

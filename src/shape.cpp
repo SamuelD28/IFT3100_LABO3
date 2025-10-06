@@ -2,27 +2,33 @@
 #include <shape.hpp>
 #include <glad.h>
 
-float *shape::triangle::getVertices()
+std::array<float, 12> shape::triangle::getVertices()
 {
-	auto vertices = new float[6];
-	// Index 0
+	auto vertices = std::array<float, 12>();
+	// Line 1
 	vertices[0] = first.x;
 	vertices[1] = first.y;
-	// Index 1
 	vertices[2] = second.x;
 	vertices[3] = second.y;
-	// Index 2
-	vertices[4] = third.x;
-	vertices[5] = third.y;
+	// Line 2
+	vertices[4] = second.x;
+	vertices[5] = second.y;
+	vertices[6] = third.x;
+	vertices[7] = third.y;
+	// Line 3
+	vertices[8] = third.x;
+	vertices[9] = third.y;
+	vertices[10] = first.x;
+	vertices[11] = first.y;
 	return vertices;
 }
 
-unsigned int *shape::triangle::getIndices()
+std::array<unsigned int, 3> shape::triangle::getIndices(unsigned int offset)
 {
-	unsigned int *indices = new unsigned int[3];
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 2;
+	auto indices = std::array<unsigned int, 3>();
+	indices[0] = 0 + offset;
+	indices[1] = 1 + offset;
+	indices[2] = 2 + offset;
 	return indices;
 }
 
@@ -34,42 +40,5 @@ void shape::triangle::draw(unsigned int programId)
 		return;
 	}
 
-	glUniform4f(uniformId, 1.0f, 1.0f, 1.0f, 1.0f);
-	glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_INT, 0);
-}
-
-float *shape::plane::getVertices()
-{
-	auto vertices = new float[6];
-	// Index 0
-	vertices[0] = lowerLeft.x;
-	vertices[1] = lowerLeft.y;
-	// Index 1
-	vertices[2] = lowerLeft.x;
-	vertices[3] = lowerLeft.y;
-	// Index 2
-	vertices[4] = lowerLeft.x;
-	vertices[5] = lowerLeft.y;
-	return vertices;
-}
-
-unsigned int *shape::plane::getIndices()
-{
-	unsigned int *indices = new unsigned int[3];
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 2;
-	return indices;
-}
-
-void shape::plane::draw(unsigned int programId)
-{
-	auto uniformId = glGetUniformLocation(programId, "Color");
-	if (uniformId == -1)
-	{
-		return;
-	}
-
-	glUniform4f(uniformId, 1.0f, 1.0f, 1.0f, 1.0f);
-	glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_INT, 0);
+	glUniform4f(uniformId, this->color[0], this->color[1], this->color[2], this->color[3]);
 }

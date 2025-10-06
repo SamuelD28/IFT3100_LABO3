@@ -1,3 +1,6 @@
+#include <array>
+#include <vector>
+
 namespace shape
 {
 	struct point
@@ -15,6 +18,9 @@ namespace shape
 		unsigned int offset = 0;
 
 	public:
+		std::array<float, 4> color;
+
+	public:
 		point first;
 
 	public:
@@ -24,10 +30,10 @@ namespace shape
 		point third;
 
 	public:
-		float *getVertices();
+		std::array<float, 12> getVertices();
 
 	public:
-		unsigned int *getIndices();
+		std::array<unsigned int, 3> getIndices(unsigned int offset);
 
 	public:
 		void draw(unsigned int programId);
@@ -48,10 +54,10 @@ namespace shape
 		point upperRight;
 
 	public:
-		float *getVertices();
+		std::array<float, 8> getVertices();
 
 	public:
-		unsigned int *getIndices();
+		std::array<unsigned int, 6> getIndices();
 
 	public:
 		void draw(unsigned int programId);
