@@ -24,7 +24,7 @@ namespace shape
 		float *getVertices();
 
 	public:
-		float *getIndices();
+		unsigned int *getIndices();
 	};
 
 	struct plane

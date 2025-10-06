@@ -4,25 +4,26 @@
 float *shape::triangle::getVertices()
 {
 	auto vertices = new float[6];
+	// Index 0
 	vertices[0] = first.x;
 	vertices[1] = first.y;
+	// Index 1
 	vertices[2] = second.x;
 	vertices[3] = second.y;
+	// Index 2
 	vertices[4] = third.x;
 	vertices[5] = third.y;
 	return vertices;
 }
 
-// public:
-// 	float *getIndices()
-// 	{
-// 		float *indices = new float[3];
-// 		indices[0] = 0;
-// 		indices[1] = 1;
-// 		indices[2] = 2;
-// 		return indices;
-// 	}
-// };
+unsigned int *shape::triangle::getIndices()
+{
+	unsigned int *indices = new unsigned int[3];
+	indices[0] = 0;
+	indices[1] = 1;
+	indices[2] = 2;
+	return indices;
+}
 
 // public:
 // 	float *getVertices()

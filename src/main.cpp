@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow *window = glfwCreateWindow(1000, 1000, "Labo 3", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(900, 900, "Labo 3", NULL, NULL);
 	if (window == NULL)
 	{
 		return -1;
@@ -37,27 +37,26 @@ int main(int argc, char *argv[])
 	}
 
 	shape::triangle triangle(
-			shape::point(-1.0f, -1.0f),
-			shape::point(0.0f, 1.0f),
-			shape::point(0.0f, 1.0f));
-
-	std::cout << "HERE" << "\n"; 
-	std::cout << triangle.first.x << "\n"; 
-
+			shape::point(-0.5f, -0.5f),
+			shape::point(0.0f, 0.5f),
+			shape::point(0.5f, -0.5f));
 	auto triangleVertices = triangle.getVertices();
-	// float triangleVertices[] = {};
+	auto triangleIndices = triangle.getIndices();
 
-	unsigned int vbo, vao;
+	unsigned int vbo, vao, ebo;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle), triangleVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices) * 6, triangleVertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(triangleIndices) * 3, triangleIndices, GL_STATIC_DRAW);
 
 	std::vector<shader::shader> shaders{
 			shader::shader{0, 0, "bin/shaders/line.vert", "", GL_VERTEX_SHADER},
@@ -66,18 +65,21 @@ int main(int argc, char *argv[])
 
 	auto programId = shader::buildProgram(shaders);
 	glUseProgram(programId);
+	glUniform4f(glGetUniformLocation(programId, "Color"), 1.0f, 1.0f, 1.0f, 1.0f);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
 		glBindVertexArray(vao);
-		glDrawArrays(GL_LINES, 0, 8);
+		glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_INT, 0);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	// delete trianglerVertices;
+	delete triangleVertices;
 	glfwTerminate();
 	return 0;
 }
