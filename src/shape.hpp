@@ -15,9 +15,6 @@ namespace shape
 	struct triangle
 	{
 	public:
-		unsigned int offset = 0;
-
-	public:
 		std::array<float, 4> color;
 
 	public:
@@ -30,7 +27,7 @@ namespace shape
 		point third;
 
 	public:
-		std::array<float, 12> getVertices();
+		std::array<float, 6> getVertices();
 
 	public:
 		std::array<unsigned int, 3> getIndices(unsigned int offset);

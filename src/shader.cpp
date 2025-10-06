@@ -91,7 +91,7 @@ namespace shader
 	}
 
 	// Program stuff
-	unsigned int initProgram()
+	unsigned int initProgram()    
 	{
 		return glCreateProgram();
 	}

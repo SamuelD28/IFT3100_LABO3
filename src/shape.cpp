@@ -2,24 +2,18 @@
 #include <shape.hpp>
 #include <glad.h>
 
-std::array<float, 12> shape::triangle::getVertices()
+std::array<float, 6> shape::triangle::getVertices()
 {
-	auto vertices = std::array<float, 12>();
+	auto vertices = std::array<float, 6>();
 	// Line 1
 	vertices[0] = first.x;
 	vertices[1] = first.y;
+	// Line 2
 	vertices[2] = second.x;
 	vertices[3] = second.y;
-	// Line 2
-	vertices[4] = second.x;
-	vertices[5] = second.y;
-	vertices[6] = third.x;
-	vertices[7] = third.y;
 	// Line 3
-	vertices[8] = third.x;
-	vertices[9] = third.y;
-	vertices[10] = first.x;
-	vertices[11] = first.y;
+	vertices[4] = third.x;
+	vertices[5] = third.y;
 	return vertices;
 }
 
