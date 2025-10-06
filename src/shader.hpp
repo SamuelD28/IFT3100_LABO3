@@ -20,6 +20,7 @@ namespace shader
 		std::string path = "";
 		std::string source = "";
 		unsigned int type = -1;
+		unsigned int offset = 0;
 	};
 
 	std::ostream &operator<<(std::ostream &os, const shader &shader);

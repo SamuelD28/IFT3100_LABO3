@@ -12,6 +12,9 @@ namespace shape
 	struct triangle
 	{
 	public:
+		unsigned int offset = 0;
+
+	public:
 		point first;
 
 	public:
@@ -25,6 +28,9 @@ namespace shape
 
 	public:
 		unsigned int *getIndices();
+
+	public:
+		void draw(unsigned int programId);
 	};
 
 	struct plane
@@ -45,6 +51,9 @@ namespace shape
 		float *getVertices();
 
 	public:
-		float *getIndices();
+		unsigned int *getIndices();
+
+	public:
+		void draw(unsigned int programId);
 	};
 };

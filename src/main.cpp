@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 	}
 
 	shape::triangle triangle(
+			0,
 			shape::point(-0.5f, -0.5f),
 			shape::point(0.0f, 0.5f),
 			shape::point(0.5f, -0.5f));
@@ -65,7 +66,6 @@ int main(int argc, char *argv[])
 
 	auto programId = shader::buildProgram(shaders);
 	glUseProgram(programId);
-	glUniform4f(glGetUniformLocation(programId, "Color"), 1.0f, 1.0f, 1.0f, 1.0f);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glBindVertexArray(vao);
-		glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_INT, 0);
+		triangle.draw(programId);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
