@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow *window = glfwCreateWindow(900, 900, "Labo 3", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(800, 800, "Labo 3", NULL, NULL);
 	if (window == NULL)
 	{
 		return -1;
@@ -45,28 +45,36 @@ int main(int argc, char *argv[])
 			shape::point(0.0f, 0.5f),
 			shape::point(0.5f, -0.5f));
 	auto triangleVertices = triangle.getVertices();
-	auto triangleIndices = triangle.getIndices(0);
+	auto triangleIndices = triangle.getIndices();
 
 	// Create iterator instead of two list
-	vertices.insert(vertices.end(), triangleVertices.begin(), triangleVertices.end());
-	indices.insert(indices.end(), triangleIndices.begin(), triangleIndices.end());
+	// vertices.insert(vertices.end(), triangleVertices.begin(), triangleVertices.end());
+	// indices.insert(indices.end(), triangleIndices.begin(), triangleIndices.end());
 
-	shape::triangle triangle_two(
+	shape::plane rectangle(
+			std::array<float, 4>{0.0f, 0.0f, 1.0f, 0.0f},
+			shape::point(-0.5f, -0.5f),
+			shape::point(-0.5f, 0.5f),
+			shape::point(0.5f, -0.5f),
+			shape::point(0.5f, 0.5f));
+	auto rectangleVertices = rectangle.getVertices();
+	auto rectangleIndices = rectangle.getIndices();
+	// Create iterator instead of two list
+	vertices.insert(vertices.end(), rectangleVertices.begin(), rectangleVertices.end());
+	indices.insert(indices.end(), rectangleIndices.begin(), rectangleIndices.end());
+
+	shape::plane rectangleTwo(
 			std::array<float, 4>{0.0f, 1.0f, 0.0f, 0.0f},
-			shape::point(-0.75f, -0.75f),
-			shape::point(0.0f, 0.75f),
-			shape::point(0.75f, -0.75f));
-	auto triangleTwoVertices = triangle_two.getVertices();
-	auto triangleTwoIndices = triangle_two.getIndices(3);
+			shape::point(-0.7f, -0.7f),
+			shape::point(-0.7f, 0.7f),
+			shape::point(0.7f, -0.7f),
+			shape::point(0.7f, 0.7f));
+	auto rectangleTwoVertices = rectangleTwo.getVertices();
+	auto rectangleTwoIndices = rectangleTwo.getIndices();
 
 	// Create iterator instead of two list
-	vertices.insert(vertices.end(), triangleTwoVertices.begin(), triangleTwoVertices.end());
-	indices.insert(indices.end(), triangleTwoIndices.begin(), triangleTwoIndices.end());
-
-	// for (auto indice : indices)
-	// {
-	// 	std::cout << indice << "\n";
-	// }
+	vertices.insert(vertices.end(), rectangleTwoVertices.begin(), rectangleTwoVertices.end());
+	indices.insert(indices.end(), rectangleTwoIndices.begin(), rectangleTwoIndices.end());
 
 	unsigned int vbo, vao, ebo;
 	glGenVertexArrays(1, &vao);
@@ -98,11 +106,9 @@ int main(int argc, char *argv[])
 
 		glBindVertexArray(vao);
 
-		triangle.draw(programId);
-		glDrawElements(GL_LINE_LOOP, indices.size() / 2, GL_UNSIGNED_INT, 0);
-		
-		triangle_two.draw(programId);
-		glDrawElements(GL_LINE_LOOP, indices.size() / 2, GL_UNSIGNED_INT, (void *)(3 * sizeof(unsigned int)));
+		// triangle.draw(programId, 0);
+		rectangle.draw(programId, 0);
+		rectangleTwo.draw(programId, 1);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

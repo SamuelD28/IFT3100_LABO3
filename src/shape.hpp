@@ -30,14 +30,17 @@ namespace shape
 		std::array<float, 6> getVertices();
 
 	public:
-		std::array<unsigned int, 3> getIndices(unsigned int offset);
+		std::array<unsigned int, 3> getIndices();
 
 	public:
-		void draw(unsigned int programId);
+		void draw(unsigned int programId, unsigned int index);
 	};
 
 	struct plane
 	{
+	public:
+		std::array<float, 4> color;
+
 	public:
 		point lowerLeft;
 
@@ -57,6 +60,6 @@ namespace shape
 		std::array<unsigned int, 6> getIndices();
 
 	public:
-		void draw(unsigned int programId);
+		void draw(unsigned int programId, unsigned int index);
 	};
 };
